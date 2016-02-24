@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="WWWingsModell.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="WWWingsModellStoreContainer">
+    <EntitySet Name="PersonSet" EntityType="WWWingsModell.Store.PersonSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FlugSet" EntityType="WWWingsModell.Store.FlugSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PersonSet_Passagier" EntityType="WWWingsModell.Store.PersonSet_Passagier" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PersonSet_Pilot" EntityType="WWWingsModell.Store.PersonSet_Pilot" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PassagierFlug" EntityType="WWWingsModell.Store.PassagierFlug" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_PassagierFlug_Passagier" Association="WWWingsModell.Store.FK_PassagierFlug_Passagier">
+      <End Role="Passagier" EntitySet="PersonSet_Passagier" />
+      <End Role="PassagierFlug" EntitySet="PassagierFlug" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PassagierFlug_Flug" Association="WWWingsModell.Store.FK_PassagierFlug_Flug">
+      <End Role="Flug" EntitySet="FlugSet" />
+      <End Role="PassagierFlug" EntitySet="PassagierFlug" />
+    </AssociationSet>
+    <AssociationSet Name="PilotFlug" Association="WWWingsModell.Store.PilotFlug">
+      <End Role="Pilot" EntitySet="PersonSet_Pilot" />
+      <End Role="Flug" EntitySet="FlugSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Passagier_inherits_Person" Association="WWWingsModell.Store.FK_Passagier_inherits_Person">
+      <End Role="Person" EntitySet="PersonSet" />
+      <End Role="Passagier" EntitySet="PersonSet_Passagier" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pilot_inherits_Person" Association="WWWingsModell.Store.FK_Pilot_inherits_Person">
+      <End Role="Person" EntitySet="PersonSet" />
+      <End Role="Pilot" EntitySet="PersonSet_Pilot" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="PersonSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="Vorname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Geburtsdatum" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FlugSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Abflugort" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Zielort" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Datum" Type="datetime" Nullable="false" />
+    <Property Name="Plaetze" Type="smallint" Nullable="false" />
+    <Property Name="FreiePlaetze" Type="smallint" Nullable="false" />
+    <Property Name="PilotId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PersonSet_Passagier">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="PassagierStatus" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PersonSet_Pilot">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Einstellungsdatum" Type="datetime" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PassagierFlug">
+    <Key>
+      <PropertyRef Name="Passagier_Id" />
+      <PropertyRef Name="Flug_Id" />
+    </Key>
+    <Property Name="Passagier_Id" Type="int" Nullable="false" />
+    <Property Name="Flug_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="PilotFlug">
+    <End Role="Pilot" Type="WWWingsModell.Store.PersonSet_Pilot" Multiplicity="1" />
+    <End Role="Flug" Type="WWWingsModell.Store.FlugSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pilot">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Flug">
+        <PropertyRef Name="PilotId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PassagierFlug_Passagier">
+    <End Role="Passagier" Type="WWWingsModell.Store.PersonSet_Passagier" Multiplicity="1" />
+    <End Role="PassagierFlug" Type="WWWingsModell.Store.PassagierFlug" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Passagier">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PassagierFlug">
+        <PropertyRef Name="Passagier_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PassagierFlug_Flug">
+    <End Role="PassagierFlug" Type="WWWingsModell.Store.PassagierFlug" Multiplicity="*" />
+    <End Role="Flug" Type="WWWingsModell.Store.FlugSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Flug">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PassagierFlug">
+        <PropertyRef Name="Flug_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Passagier_inherits_Person">
+    <End Role="Person" Type="WWWingsModell.Store.PersonSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Passagier" Type="WWWingsModell.Store.PersonSet_Passagier" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Passagier">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pilot_inherits_Person">
+    <End Role="Person" Type="WWWingsModell.Store.PersonSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Pilot" Type="WWWingsModell.Store.PersonSet_Pilot" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Pilot">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="WWWingsModell" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="WWWingsModellContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PersonSet" EntityType="WWWingsModell.Person" />
+          <EntitySet Name="FlugSet" EntityType="WWWingsModell.Flug" />
+          <AssociationSet Name="PassagierFlug" Association="WWWingsModell.PassagierFlug">
+            <End Role="Passagier" EntitySet="PersonSet" />
+            <End Role="Flug" EntitySet="FlugSet" />
+          </AssociationSet>
+          <AssociationSet Name="PilotFlug" Association="WWWingsModell.PilotFlug">
+            <End Role="Pilot" EntitySet="PersonSet" />
+            <End Role="Flug" EntitySet="FlugSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Vorname" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Geburtsdatum" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Passagier" BaseType="WWWingsModell.Person">
+          <Property Name="PassagierStatus" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Flug" Relationship="WWWingsModell.PassagierFlug" FromRole="Passagier" ToRole="Flug" />
+        </EntityType>
+        <EntityType Name="Pilot" BaseType="WWWingsModell.Person">
+          <Property Name="Einstellungsdatum" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Flug" Relationship="WWWingsModell.PilotFlug" FromRole="Pilot" ToRole="Flug" />
+        </EntityType>
+        <EntityType Name="Flug">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="Abflugort" Type="String" Nullable="false" />
+          <Property Name="Zielort" Type="String" Nullable="false" />
+          <Property Name="Datum" Type="DateTime" Nullable="false" />
+          <Property Name="Plaetze" Type="Int16" Nullable="false" />
+          <Property Name="FreiePlaetze" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Passagier" Relationship="WWWingsModell.PassagierFlug" FromRole="Flug" ToRole="Passagier" />
+          <NavigationProperty Name="Pilot" Relationship="WWWingsModell.PilotFlug" FromRole="Flug" ToRole="Pilot" />
+          <Property Name="PilotId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="PassagierFlug">
+          <End Type="WWWingsModell.Passagier" Role="Passagier" Multiplicity="*" />
+          <End Type="WWWingsModell.Flug" Role="Flug" Multiplicity="*" />
+        </Association>
+        <Association Name="PilotFlug">
+          <End Type="WWWingsModell.Pilot" Role="Pilot" Multiplicity="1" />
+          <End Type="WWWingsModell.Flug" Role="Flug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pilot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Flug">
+              <PropertyRef Name="PilotId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WWWingsModellStoreContainer" CdmEntityContainer="WWWingsModellContainer">
+    <EntitySetMapping Name="PersonSet">
+      <EntityTypeMapping TypeName="IsTypeOf(WWWingsModell.Person)">
+        <MappingFragment StoreEntitySet="PersonSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Vorname" ColumnName="Vorname" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Geburtsdatum" ColumnName="Geburtsdatum" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(WWWingsModell.Passagier)">
+        <MappingFragment StoreEntitySet="PersonSet_Passagier">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="PassagierStatus" ColumnName="PassagierStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(WWWingsModell.Pilot)">
+        <MappingFragment StoreEntitySet="PersonSet_Pilot">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Einstellungsdatum" ColumnName="Einstellungsdatum" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FlugSet">
+      <EntityTypeMapping TypeName="IsTypeOf(WWWingsModell.Flug)">
+        <MappingFragment StoreEntitySet="FlugSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Abflugort" ColumnName="Abflugort" />
+          <ScalarProperty Name="Zielort" ColumnName="Zielort" />
+          <ScalarProperty Name="Datum" ColumnName="Datum" />
+          <ScalarProperty Name="Plaetze" ColumnName="Plaetze" />
+          <ScalarProperty Name="FreiePlaetze" ColumnName="FreiePlaetze" />
+          <ScalarProperty Name="PilotId" ColumnName="PilotId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PassagierFlug" TypeName="WWWingsModell.PassagierFlug" StoreEntitySet="PassagierFlug">
+      <EndProperty Name="Passagier">
+        <ScalarProperty Name="Id" ColumnName="Passagier_Id" />
+      </EndProperty>
+      <EndProperty Name="Flug">
+        <ScalarProperty Name="Id" ColumnName="Flug_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Kein" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

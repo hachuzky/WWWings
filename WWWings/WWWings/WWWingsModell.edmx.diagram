@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4ef57ff587424ab39caf70106178991e" Name="Diagram1" >
+        <EntityTypeShape EntityType="WWWingsModell.Person" Width="1.5" PointX="2.875" PointY="3.625" />
+        <EntityTypeShape EntityType="WWWingsModell.Passagier" Width="1.5" PointX="5.875" PointY="1.25" />
+        <EntityTypeShape EntityType="WWWingsModell.Pilot" Width="1.5" PointX="6.125" PointY="6.375" />
+        <InheritanceConnector EntityType="WWWingsModell.Pilot" />
+        <InheritanceConnector EntityType="WWWingsModell.Passagier" />
+        <EntityTypeShape EntityType="WWWingsModell.Flug" Width="1.5" PointX="11.375" PointY="2.5" />
+        <AssociationConnector Association="WWWingsModell.PassagierFlug" />
+        <AssociationConnector Association="WWWingsModell.PilotFlug" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
